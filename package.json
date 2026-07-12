@@ -1,0 +1,50 @@
+{
+  "name": "vibe-guard-ai",
+  "displayName": "Vibe-Guard AI",
+  "description": "Analyze, clean, and secure vibe-coded applications",
+  "version": "0.1.0",
+  "publisher": "avishkar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/avishkar/vibe-guard-ai"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vibeguard.scanCurrentFile",
+        "title": "VibeGuard: Scan Current File"
+      },
+      {
+        "command": "vibeguard.scanWorkspace",
+        "title": "VibeGuard: Scan Workspace"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "20.x",
+    "@types/vscode": "^1.90.0",
+    "@typescript-eslint/eslint-plugin": "^7.11.0",
+    "@typescript-eslint/parser": "^7.11.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  }
+}
