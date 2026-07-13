@@ -10,6 +10,17 @@ export class LLMService {
         // No API key needed in the extension anymore!
     }
 
+    private async handleProxyError(response: Response) {
+        const text = await response.text();
+        try {
+            const err = JSON.parse(text) as { error: string };
+            throw new Error(`Proxy Error: ${err.error || response.statusText}`);
+        } catch {
+            // If Vercel returns an HTML 404 or 502 page instead of JSON
+            throw new Error(`Proxy HTTP Error ${response.status}: ${text.substring(0, 100)}`);
+        }
+    }
+
     public async analyzeSecurityRisks(codeSnippet: string, filepath: string): Promise<RemediationPlan> {
         const response = await fetch(`${this.proxyUrl}/scan`, {
             method: 'POST',
@@ -17,10 +28,7 @@ export class LLMService {
             body: JSON.stringify({ codeSnippet, filepath })
         });
 
-        if (!response.ok) {
-            const err = await response.json() as { error: string };
-            throw new Error(`Proxy Error: ${err.error || response.statusText}`);
-        }
+        if (!response.ok) await this.handleProxyError(response);
 
         return await response.json() as RemediationPlan;
     }
@@ -32,10 +40,7 @@ export class LLMService {
             body: JSON.stringify({ workspaceContext })
         });
 
-        if (!response.ok) {
-            const err = await response.json() as { error: string };
-            throw new Error(`Proxy Error: ${err.error || response.statusText}`);
-        }
+        if (!response.ok) await this.handleProxyError(response);
 
         return await response.json() as RemediationPlan;
     }
@@ -47,10 +52,7 @@ export class LLMService {
             body: JSON.stringify({ originalCode, failedFix, compilerError })
         });
 
-        if (!response.ok) {
-            const err = await response.json() as { error: string };
-            throw new Error(`Proxy Error: ${err.error || response.statusText}`);
-        }
+        if (!response.ok) await this.handleProxyError(response);
 
         const data = await response.json() as { correctedFixSnippet: string };
         return data.correctedFixSnippet;

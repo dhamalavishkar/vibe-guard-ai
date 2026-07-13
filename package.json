@@ -1,8 +1,8 @@
 {
   "name": "vibe-guard-ai",
   "displayName": "Vibe-Guard AI",
-  "description": "Analyze, clean, and secure vibe-coded applications",
-  "version": "0.1.0",
+  "description": "Agentic IDE for automated security and performance fixes.",
+  "version": "0.1.2",
   "publisher": "avishkar",
   "repository": {
     "type": "git",
